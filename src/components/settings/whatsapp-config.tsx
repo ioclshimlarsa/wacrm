@@ -168,7 +168,8 @@ export function WhatsAppConfig() {
       return;
     }
     fetchConfig(accountId);
-  }, [authLoading, profileLoading, user, accountId, fetchConfig]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [authLoading, profileLoading, user?.id, accountId, fetchConfig]);
 
   async function handleSave() {
     if (!phoneNumberId.trim()) {
