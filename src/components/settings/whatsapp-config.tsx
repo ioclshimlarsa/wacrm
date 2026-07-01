@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useRef } from 'react';
 import { toast } from 'sonner';
 import {
   Eye,
@@ -43,6 +43,8 @@ export function WhatsAppConfig() {
   // joined an account sees the inviter's saved config without
   // having to re-enter anything.
   const { user, accountId, loading: authLoading, profileLoading } = useAuth();
+
+  const lastFetchedAccountId = useRef<string | null>(null);
 
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -167,6 +169,10 @@ export function WhatsAppConfig() {
       setLoading(false);
       return;
     }
+    if (lastFetchedAccountId.current === accountId) {
+      return;
+    }
+    lastFetchedAccountId.current = accountId;
     fetchConfig(accountId);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [authLoading, profileLoading, user?.id, accountId, fetchConfig]);
